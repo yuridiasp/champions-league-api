@@ -1,17 +1,24 @@
 import fs from 'fs';
 import path from 'path';
 
-import { IPlayer } from '../../model/players-model';
+import { IPlayer } from '../../model/player-model';
 
-const dataBase: IPlayer[] = [
-    { id:1, name: "Messi" },
-    { id:1, name: "Ronaldo" },
-]
+const loadData = async ():Promise<IPlayer[]> => {
+    const dataPath = path.join(__dirname,"..", "..","data", "players.json");
+    const data = fs.readFileSync(dataPath, 'utf8');
+
+    const json:IPlayer[] = JSON.parse(data);
+
+    return json;
+}
 
 export const findAllPlayers = async (): Promise<IPlayer[]> => {
-    return dataBase;
+    const database = await loadData();
+    return database;
 }
 
 export const findPlayerByID = async (id: number):Promise<IPlayer | undefined> => {
-    return dataBase.find( player => player.id === id );
+    const database = await loadData();
+    
+    return database.find( (player: { id: number; }) => player.id === id );
 }

@@ -1,16 +1,29 @@
 import * as playerRepository from "../../repositories/players/players-repository";
-import { ok, noContent } from "../../utils/http-helper";
+import * as HttpResponse from "../../utils/http-helper";
 
-export const getPlayerService = async () => {
+export const getPlayersService = async () => {
     const data = await playerRepository.findAllPlayers();
     let response = null;
 
     if (data) {
-        response = await ok(data);
+        response = await HttpResponse.ok(data);
     } else {
-        response = await noContent();
+        response = await HttpResponse.noContent();
     }
 
+
+    return response;
+};
+
+export const getPlayerByIdService = async (id: number) => {
+    const data = await playerRepository.findPlayerByID(id);
+    let response = null;
+
+    if (data) {
+        response = await HttpResponse.ok(data);
+    } else {
+        response = await HttpResponse.noContent();
+    }
 
     return response;
 };
